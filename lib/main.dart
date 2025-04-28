@@ -1,5 +1,5 @@
 import 'package:bookly_app/constans.dart';
-import 'package:bookly_app/features/presentation/views/splash_view.dart';
+import 'package:bookly_app/features/presentation/views/myhomepage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
@@ -17,7 +17,7 @@ class BooclyApp extends StatelessWidget {
         scaffoldBackgroundColor: KeyprimaryColor,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashView(),
+      home: const MyHomePage(),
     );
   }
 }
