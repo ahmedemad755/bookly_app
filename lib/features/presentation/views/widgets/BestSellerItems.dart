@@ -1,98 +1,35 @@
-import 'package:bookly_app/features/presentation/views/book_details.dart';
+import 'package:bookly_app/features/presentation/views/widgets/bookmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:bookly_app/features/presentation/views/book_details.dart';
 
-// ignore: must_be_immutable
-class BestSellerItems extends StatefulWidget {
-  BestSellerItems({super.key});
-
-  @override
-  State<BestSellerItems> createState() => _BestSellerItemsState();
-}
-
-class _BestSellerItemsState extends State<BestSellerItems> {
-  final List<Map<String, String>> bestSellerBooks = [
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 1",
-      "subtitle": "Best Book Ever",
-      "author": "Author 1",
-      "rating": "",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 2",
-      "subtitle": "Another Great Book",
-      "author": "Author 2",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 3",
-      "subtitle": "Must Read!",
-      "author": "Author 3",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
-    {
-      "image": "assets/slider1.PNG",
-      "title": "Book Title 4",
-      "subtitle": "Must Read!",
-      "author": "Author 4",
-      "rating": "4.0",
-    },
+class BestSellerItems extends StatelessWidget {
+  final List<BookModel> bestSellerBooks = [
+    BookModel(
+      image: "assets/slider1.PNG",
+      title: "Book Title 1",
+      author: "Author 1",
+      rating: "4.5",
+      description: "Best Book Ever",
+    ),
+    BookModel(
+      image: "assets/slider1.PNG",
+      title: "Book Title 2",
+      author: "Author 2",
+      rating: "4.0",
+      description: "Another Great Book",
+    ),
+    BookModel(
+      image: "assets/slider1.PNG",
+      title: "Book Title 3",
+      author: "Author 3",
+      rating: "4.0",
+      description: "Must Read!",
+    ),
+    // أضف باقي الكتب هنا
   ];
 
   @override
   Widget build(BuildContext context) {
-    bool isStarred = true;
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       itemCount: bestSellerBooks.length,
@@ -107,18 +44,7 @@ class _BestSellerItemsState extends State<BestSellerItems> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) => BookDetailsPage(
-                        imageUrl:
-                            book["image"] ??
-                            "assets/default_image.png", // استخدام صورة افتراضية لو مش موجودة
-                        title: book["title"] ?? "No Title.......",
-                        author: book["author"] ?? "Unknown Author",
-                        rating: book["rating"] ?? "0.0",
-                        description:
-                            book["description"] ??
-                            "No Description available", // وصف الكتاب
-                      ),
+                  builder: (context) => BookDetailsPage(book: book),
                 ),
               );
             },
@@ -126,15 +52,12 @@ class _BestSellerItemsState extends State<BestSellerItems> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 100, // 💬 لازم نحدد ارتفاع
+                  height: 100, // ارتفاع الصورة
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: AspectRatio(
-                      aspectRatio: 1, // 👈 تحافظ على تناسب العرض والطول
-                      child: Image.asset(
-                        book["image"] ?? "لا يوجد صوره ",
-                        fit: BoxFit.cover,
-                      ),
+                      aspectRatio: 1, // التناسب بين العرض والطول
+                      child: Image.asset(book.image, fit: BoxFit.cover),
                     ),
                   ),
                 ),
@@ -144,7 +67,7 @@ class _BestSellerItemsState extends State<BestSellerItems> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        book["title"] ?? "No Title.......",
+                        book.title,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -154,7 +77,7 @@ class _BestSellerItemsState extends State<BestSellerItems> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        book["author"] ?? "Unknown Author",
+                        book.author,
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
@@ -167,7 +90,7 @@ class _BestSellerItemsState extends State<BestSellerItems> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            book["author"]!,
+                            book.author,
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.white,
@@ -179,17 +102,14 @@ class _BestSellerItemsState extends State<BestSellerItems> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    isStarred =
-                                        !isStarred; // تغيير الحالة عند الضغط
-                                  });
+                                  // أضف تغيير حالة "مفضل" إذا كنت بحاجة إليها
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.star,
-                                  color: isStarred ? Colors.amber : Colors.grey,
+                                  color: Colors.amber,
                                 ),
                               ),
-                              Text(book["rating"] ?? "0.0"),
+                              Text(book.rating),
                             ],
                           ),
                         ],

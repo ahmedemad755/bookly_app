@@ -1,22 +1,28 @@
-import 'package:bookly_app/features/presentation/views/widgets/customListViwe.dart';
+import 'package:bookly_app/features/presentation/views/widgets/bookmodel.dart';
+import 'package:bookly_app/features/presentation/views/widgets/homeview_body.dart';
 import 'package:flutter/material.dart';
+import 'package:bookly_app/features/presentation/views/widgets/customListViwe.dart';
 
+// ignore: must_be_immutable
 class BookDetailsPage extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String author;
-  final String rating;
-  final String description;
+  final BookModel book;
 
-  // هنا نمرر القيم عند الانتقال للصفحة
-  const BookDetailsPage({
-    super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.author,
-    required this.rating,
-    required this.description,
-  });
+  BookDetailsPage({super.key, required this.book});
+
+  // هنا حط ليست كتب إضافية لو حابب
+  final List<BookModel> relatedBooks = List.generate(
+    10, // نكرر الكتاب 10 مرات
+    (index) => BookModel(
+      image:
+          index % 2 == 0
+              ? "assets/test.jpg"
+              : "assets/slider3.PNG", // نستخدم الصور بالتبادل
+      title: "Related Book ${index + 1}",
+      author: "Author ${index + 1}",
+      rating: "4.5",
+      description: "Description of Related Book ${index + 1}",
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -28,62 +34,54 @@ class BookDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // صورة الكتاب
               Center(
-                // child: Container(
-                //   height: 250, // تحديد الارتفاع
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(25),
-                //     // تحديد الزوايا الدائرية للحدود
-                //     // border: Border.all(
-                //     //   color: Colors.black, // اللون الخاص بالحدود
-                //     //   width: 2, // سمك الحدود
-                //     // ),
-                //   ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    20,
-                  ), // الحفاظ على الزوايا الدائرية داخل الصورة
-                  child: Image.asset(imageUrl, height: 250, fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    book.image,
+                    height: 250,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                // ),
               ),
               const SizedBox(height: 16),
-              // عنوان الكتاب
               Text(
-                title,
+                book.title,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              // اسم المؤلف
               Text(
-                'Author: $author',
+                'Author: ${book.author}',
                 style: const TextStyle(fontSize: 18, color: Colors.grey),
               ),
               const SizedBox(height: 8),
-              // التقييم
               Text(
-                'Rating: $rating',
+                'Rating: ${book.rating}',
                 style: const TextStyle(fontSize: 18, color: Colors.orange),
               ),
               const SizedBox(height: 16),
-              // وصف الكتاب
               Text(
-                description,
+                book.description,
                 style: const TextStyle(fontSize: 16, height: 1.5),
               ),
               const SizedBox(height: 16),
-              // زر للرجوع أو أي حاجة إضافية
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // للرجوع للصفحة السابقة
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeviewBody(),
+                    ), // تأكد من استيراد HomeViewBody
+                  );
                 },
                 child: const Text('Back to List'),
               ),
-              customListViwe(),
+              const SizedBox(height: 20),
+              // هنا نعرض كتب إضافية لو حابب
+              customListViwe(items: relatedBooks),
             ],
           ),
         ),

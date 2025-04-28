@@ -1,39 +1,45 @@
+import 'package:bookly_app/features/presentation/views/widgets/bookmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:bookly_app/features/presentation/views/book_details.dart';
 
 // ignore: camel_case_types
 class customListViwe extends StatelessWidget {
-  const customListViwe({super.key});
+  final List<BookModel> items;
+
+  const customListViwe({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
-    List<String> items = [
-      "assets/test.jpg",
-      "assets/slider1.PNG",
-      "assets/test.jpg",
-      "assets/slider3.PNG",
-      "assets/test.jpg",
-    ];
-
     return Column(
       children: [
         const SizedBox(height: 24),
         SizedBox(
-          height: 200, // نخليها هنا عشان نتحكم بارتفاع الـ ListView نفسه
+          height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
             itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.only(right: 8),
-                child: AspectRatio(
-                  aspectRatio:
-                      3 / 4, // 👈 تحكم بنسبة العرض للطول  عرض الي طول (w/h)
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        image: AssetImage(items[index]),
-                        fit: BoxFit.cover,
+              BookModel book = items[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BookDetailsPage(book: book),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  child: AspectRatio(
+                    aspectRatio: 3 / 4,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: AssetImage(book.image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
